@@ -1,0 +1,25 @@
+name: Maven-Java-App Containerization CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build Docker Image from Dockerfile
+      run: docker build -t gillrafay/maven-java-monitoring-app:v1.0 .
+
+    - name: Push Image to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+    - run: docker push gillrafay/maven-java-monitoring-app:v1.0
+    
